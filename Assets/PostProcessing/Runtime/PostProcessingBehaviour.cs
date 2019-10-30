@@ -169,7 +169,7 @@ namespace UnityEngine.PostProcessing
             TryExecuteCommandBuffer(m_FogComponent);
 
             if (!m_RenderingInSceneView)
-                TryExecuteCommandBuffer(m_MotionBlur);
+				TryExecuteCommandBuffer(m_MotionBlur);
         }
 
         void OnPostRender()
