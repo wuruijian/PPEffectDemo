@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class Main : MonoBehaviour {
+public class RectImage : MonoBehaviour {
 
 	// Use this for initialization
 
@@ -23,7 +23,7 @@ public class Main : MonoBehaviour {
 	private int currentFrame;
 
 	void Start () {
-		_mat = new Material (Shader.Find("Hidden/RectImageEffectShader"));
+		_mat = new Material (Shader.Find("Jim/RectImageEffectShader"));
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
