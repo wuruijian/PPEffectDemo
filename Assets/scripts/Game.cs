@@ -38,6 +38,7 @@ public class Game : MonoBehaviour
             switch (mode)
             {
                 case SceneMode.RECT:
+                    
                     break;
                 case SceneMode.COL:
                     

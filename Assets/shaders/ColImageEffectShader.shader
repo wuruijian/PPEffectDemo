@@ -40,10 +40,13 @@
 
             float _XIndex;
 
-			float _Speed;
+			// float _Speed;
 
-			// uniform float4 _ListPoint[100];
+			// uniform float _ListPoint[100];
 			// uniform float _Length;
+
+            uniform float _ListSpeed[100];
+			uniform float _SpeedLength;
 
 			v2f vert (appdata v)
 			{
@@ -63,12 +66,13 @@
 
 				float xGap = 1 / _Row;
 
-				float xIndex = int(i.uv.x / xGap);
+				float currentXIndex = int(i.uv.x / xGap);
 
-                if(_XIndex == xIndex){
-                    return float4(1,1,1,1);
-                }
-
+                for (int j=0; j<_SpeedLength; j++)
+				{
+                    float alpha = _ListSpeed[currentXIndex];
+					return float4(1,1,1,1)*alpha;
+				}
 				return float4(0,0,0,0);
 			}
 			ENDCG
