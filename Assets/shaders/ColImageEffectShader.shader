@@ -5,7 +5,7 @@
 		_MainTex ("Texture", 2D) = "white" {}
 		_Row("row",float) = 4
 		_XIndex("_XIndex",float) = 4
-
+        _yHeight("_yHeight",float) = 0
 		_Speed("_Speed",float) = 0
 	}
 	SubShader
@@ -39,7 +39,7 @@
 			// float _MouseUV_Y;
 
             float _XIndex;
-
+            float _yHeight;
 			// float _Speed;
 
 			// uniform float _ListPoint[100];
@@ -71,7 +71,25 @@
                 for (int j=0; j<_SpeedLength; j++)
 				{
                     float alpha = _ListSpeed[currentXIndex];
-					return float4(1,1,1,1)*alpha;
+
+                    if(_XIndex == currentXIndex){
+                        if(i.uv.y > _yHeight){
+                            return float4(1,1,1,1)*alpha;
+                        }else{
+                            float4(0,0,0,0);
+                        }
+                    }else{
+                        return float4(1,1,1,1)*alpha;
+                    }
+
+                    // if(alpha > 0){
+                    //     if(i.uv.y > 0.3 && i.uv.y < 0.6){
+                    //         alpha *= 0.5;
+                    //     }
+                    // }
+
+
+					
 				}
 				return float4(0,0,0,0);
 			}

@@ -16,8 +16,14 @@ public class ColImage : MonoBehaviour
 
     private int _xIndex = -1;
 
+    private int _oldIndex = -1;
+    private float _oldLeftIndexAlpha = -1;
+    private float _oldRightIndexAlpha = -1;
+
     private List<float> _listPoint = new List<float>();
     private List<float> _listSpeed = new List<float>();
+
+    private float _yHeight = 0f;
     void Start()
     {
         _mat = new Material (Shader.Find("Jim/ColImageEffectShader"));
@@ -43,8 +49,24 @@ public class ColImage : MonoBehaviour
 
 			_xIndex = (int)(px / xGap);
 
+            _yHeight = py;
+
             if(_xIndex >= 0 && _xIndex < _listPoint.Count){
+                if(_oldIndex != _xIndex){
+                    _oldLeftIndexAlpha = Random.Range(1,100) > 70 ? 0.75f : 0;
+                    _oldRightIndexAlpha = Random.Range(1,100) > 70 ? 0.90f : 0;
+                }
+                _oldIndex = _xIndex;
+                //left
+                if(_xIndex - 1 >= 0){
+                    _listSpeed[_xIndex-1] = _oldLeftIndexAlpha;
+                }
+                //middle
                 _listSpeed[_xIndex] = 1;
+                //right
+                if(_xIndex + 1 < _listPoint.Count){
+                    _listSpeed[_xIndex+1] = _oldRightIndexAlpha;
+                }
             }
 		}
     }
@@ -53,7 +75,6 @@ public class ColImage : MonoBehaviour
     void OnRenderImage(RenderTexture source, RenderTexture destination)
 	{
 		if (_mat == null) {
-            sign = "xxxxxxxxxxxxx";
 			Graphics.Blit (source, destination);
 			return;
 		}
@@ -74,17 +95,10 @@ public class ColImage : MonoBehaviour
 
         _mat.SetFloat ("_XIndex", _xIndex);
 
-        // _mat.SetFloat ("_Length", _listPoint.Count);
-        // if(_listPoint.Count > 0){
-            // _mat.SetFloatArray("_ListPoint",_listPoint);
-        // }
+        _mat.SetFloat("_yHeight",_yHeight);
 
         _mat.SetFloat ("_SpeedLength", _listSpeed.Count);
-        // if(_listSpeed.Count > 0){
-            _mat.SetFloatArray("_ListSpeed",_listSpeed);
-        // }
-
-		// _mat.SetFloat ("_Speed", speed);
+        _mat.SetFloatArray("_ListSpeed",_listSpeed);
 
 		Graphics.Blit(source, rt, _mat, 0);
 
@@ -93,12 +107,12 @@ public class ColImage : MonoBehaviour
 		RenderTexture.ReleaseTemporary (rt);
 	}
 
-    void OnGUI()
-    {
-        if(GUI.Button(new Rect(0,0,100,100),sign)){
-            
-        }
-    }
+    // void OnGUI()
+    // {
+    //     if(GUI.Button(new Rect(0,0,100,100),sign)){
+
+    //     }
+    // }
 
 
 
