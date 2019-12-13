@@ -21,8 +21,27 @@ public class Game : MonoBehaviour
         _allImageEffects.Add(SceneMode.COL,gameObject.GetComponent<ColImage>());
     }
 
+    private bool _isDown = false;
     void Update()
     {
+        if (Input.GetMouseButton (0)) {
+            if(!_isDown){
+                if(mode == SceneMode.Default){
+                    mode = SceneMode.COL;
+                }else if(mode == SceneMode.COL){
+                    mode = SceneMode.RECT;
+                }else{
+                    mode = SceneMode.COL;
+                }
+            }
+
+            _isDown = true;
+
+        }else{
+            if(_isDown){
+                _isDown = false;
+            }
+        }
         if(_oldMode != mode){
             _oldMode = mode;
 
