@@ -8,6 +8,7 @@ public class Game : MonoBehaviour
         Default,
         RECT,
         COL,
+        RAY,
     }
 
     public SceneMode mode = SceneMode.Default;
@@ -19,6 +20,7 @@ public class Game : MonoBehaviour
     {
         _allImageEffects.Add(SceneMode.RECT,gameObject.GetComponent<RectImage>());
         _allImageEffects.Add(SceneMode.COL,gameObject.GetComponent<ColImage>());
+        _allImageEffects.Add(SceneMode.RAY,gameObject.GetComponent<RayImage>());
     }
 
     private bool _isDown = false;
@@ -26,13 +28,13 @@ public class Game : MonoBehaviour
     {
         if (Input.GetMouseButton (0)) {
             if(!_isDown){
-                if(mode == SceneMode.Default){
-                    mode = SceneMode.COL;
-                }else if(mode == SceneMode.COL){
-                    mode = SceneMode.RECT;
-                }else{
-                    mode = SceneMode.COL;
-                }
+                // if(mode == SceneMode.Default){
+                //     mode = SceneMode.COL;
+                // }else if(mode == SceneMode.COL){
+                //     mode = SceneMode.RECT;
+                // }else{
+                //     mode = SceneMode.COL;
+                // }
             }
 
             _isDown = true;
