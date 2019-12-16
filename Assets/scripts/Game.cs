@@ -9,6 +9,7 @@ public class Game : MonoBehaviour
         RECT,
         COL,
         RAY,
+        RAY2,
     }
 
     public SceneMode mode = SceneMode.Default;
@@ -21,6 +22,7 @@ public class Game : MonoBehaviour
         _allImageEffects.Add(SceneMode.RECT,gameObject.GetComponent<RectImage>());
         _allImageEffects.Add(SceneMode.COL,gameObject.GetComponent<ColImage>());
         _allImageEffects.Add(SceneMode.RAY,gameObject.GetComponent<RayImage>());
+        _allImageEffects.Add(SceneMode.RAY2,gameObject.GetComponent<RayImage2>());
     }
 
     private bool _isDown = false;
