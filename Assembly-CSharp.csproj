@@ -60,6 +60,7 @@
      <Compile Include="Assets\scripts\RayImage.cs" />
      <Compile Include="Assets\scripts\RayImage2.cs" />
      <Compile Include="Assets\scripts\RectImage.cs" />
+     <None Include="Assets\StreamingAssets\config.txt" />
      <None Include="Assets\shaders\RayImageEffectShader2.shader" />
      <None Include="Assets\shaders\ColImageEffectShader.shader" />
      <None Include="Assets\shaders\RaymageEffectShader.shader" />
