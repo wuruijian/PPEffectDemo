@@ -25,6 +25,7 @@ public class Game : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         Application.runInBackground = true;
+        Screen.SetResolution(1920,1080,true);
     }
     void Start()
     {
@@ -55,6 +56,9 @@ public class Game : MonoBehaviour
     private SceneMode _lastGameMode = SceneMode.STANDBY;
     void Update()
     {
+        if(Input.GetKey(KeyCode.Escape)){
+            Application.Quit();
+        }
         if (Input.GetMouseButton (0)) {
             _totalNoTouchFrame = 0;
             if(!_isDown){
