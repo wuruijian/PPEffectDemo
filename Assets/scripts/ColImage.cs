@@ -37,9 +37,7 @@ public class ColImage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton (0) && currentFrame != Time.frameCount) {
-			//Debug.Log (Input.mousePosition);
-
+        if (Game.isMove && currentFrame != Time.frameCount) {
 			currentFrame = Time.frameCount;
 
 			float px = Input.mousePosition.x / Screen.width;

@@ -43,8 +43,10 @@
 
 			float _Speed;
 
-			uniform float4 _ListPoint[100];
+			uniform float4 _ListPoint[90];
 			uniform float _Length;
+			uniform float4 _ListPoint2[90];
+			uniform float _Length2;
 
 			v2f vert (appdata v)
 			{
@@ -76,6 +78,13 @@
 				for (int j=0; j<_Length; j++)
 				{
 					float4 p4 = _ListPoint[j]; // 索引取值
+					if(p4.x == xIndex && p4.y == yIndex && p4.z == 1){
+						return float4(1,1,1,1)*p4.w;
+					}
+				}
+				for (int j=0; j<_Length2; j++)
+				{
+					float4 p4 = _ListPoint2[j]; // 索引取值
 					if(p4.x == xIndex && p4.y == yIndex && p4.z == 1){
 						return float4(1,1,1,1)*p4.w;
 					}

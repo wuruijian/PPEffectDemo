@@ -18,6 +18,7 @@ public class RectImage : MonoBehaviour {
 	private Vector2 _uv;
 
 	private List<Vector4> _listPoint = new List<Vector4>();
+	private List<Vector4> _listPoint2 = new List<Vector4>();
 	private List<Color> _listColor = new List<Color> ();
 	private Dictionary<string,int> _existKeys = new Dictionary<string, int> ();
 	private int currentFrame;
@@ -27,15 +28,17 @@ public class RectImage : MonoBehaviour {
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
-				_listPoint.Add (new Vector4(i,j,0,0));
+				if(j % 2 == 0){
+					_listPoint.Add (new Vector4(i,j,0,0));
+				}else{
+					_listPoint2.Add (new Vector4(i,j,0,0));
+				}
 			}
 		}
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButton (0) && currentFrame != Time.frameCount) {
-			//Debug.Log (Input.mousePosition);
+		if (Game.isMove && currentFrame != Time.frameCount) {
 
 			currentFrame = Time.frameCount;
 
@@ -52,17 +55,10 @@ public class RectImage : MonoBehaviour {
 			int yIndex = (int)(py / yGap);
 
 			//add other point
-//			AddPoint(xIndex-1,yIndex+1);
 			AddPoint(xIndex,yIndex+1);
-//			AddPoint(xIndex+1,yIndex+1);
-//
 			AddPoint(xIndex-1,yIndex);
-//			AddPoint(xIndex,yIndex,true);
 			AddPoint(xIndex+1,yIndex);
-//
-//			AddPoint(xIndex-1,yIndex-1);
 			AddPoint(xIndex,yIndex-1);
-//			AddPoint(xIndex+1,yIndex-1);
 
 		}
 	}
@@ -81,8 +77,20 @@ public class RectImage : MonoBehaviour {
 							item.w = 1;
 							item.z = showSign;
 							_listPoint [j] = item;
-							//Debug.Log (xIndex +","+yIndex);
-
+							_existKeys.Add (existKey, 1);
+						}
+						break;
+					}
+				}
+				for (int j = 0; j < _listPoint2.Count; j++) {
+					Vector4 item = _listPoint2[j];
+					string existKey = xIndex + "_" + yIndex;
+					if (item.x == xIndex && item.y == yIndex) {
+						int showSign = isShow ? 1 : (Random.Range(0,100) > 65 ? 1 : 0);
+						if(showSign == 1 && !_existKeys.TryGetValue(existKey,out temp)){
+							item.w = 1;
+							item.z = showSign;
+							_listPoint2 [j] = item;
 							_existKeys.Add (existKey, 1);
 						}
 						break;
@@ -117,6 +125,22 @@ public class RectImage : MonoBehaviour {
 				_listPoint [i] = item;
 			}
 		}
+		for (int i = _listPoint2.Count - 1; i >= 0 ; i--) {
+			Vector4 item = _listPoint2 [i];
+			if (item.z == 1) {
+				item.w -= speed;
+				if (item.w <= 0) {
+					item.w = 0;
+					item.z = 0;
+
+					string key = item.x + "_" + item.y;
+					if (_existKeys.ContainsKey (key)) {
+						_existKeys.Remove (key);
+					}
+				}
+				_listPoint2 [i] = item;
+			}
+		}
 
 		_mat.SetFloat ("_Row", row);
 		_mat.SetFloat ("_Col", col);
@@ -130,7 +154,11 @@ public class RectImage : MonoBehaviour {
 			_mat.SetVectorArray ("_ListPoint", _listPoint);
 		}
 		_mat.SetFloat ("_Length", _listPoint.Count);
-		//Debug.Log (_listPoint.Count);
+
+		if (_listPoint2.Count > 0) {
+			_mat.SetVectorArray ("_ListPoint2", _listPoint2);
+		}
+		_mat.SetFloat ("_Length2", _listPoint2.Count);
 
 		Graphics.Blit(source, rt, _mat, 0);
 

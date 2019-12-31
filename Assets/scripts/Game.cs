@@ -37,6 +37,9 @@ public class Game : MonoBehaviour
         _delayTime = int.Parse( File.ReadAllText(Application.streamingAssetsPath + "/config.txt"));
 
         StartCoroutine("LoadSound");
+
+        Cursor.visible = false;
+        _oldMousePos = Input.mousePosition;
     }
 
     IEnumerator LoadSound()
@@ -54,35 +57,29 @@ public class Game : MonoBehaviour
     private int _totalNoTouchFrame = 0;
 
     private SceneMode _lastGameMode = SceneMode.STANDBY;
+    private Vector3 _oldMousePos = Vector3.zero;
+
+    public static bool isMove = false;
     void Update()
     {
         if(Input.GetKey(KeyCode.Escape)){
             Application.Quit();
         }
-        if (Input.GetMouseButton (0)) {
-            _totalNoTouchFrame = 0;
-            if(!_isDown){
-                if(mode == SceneMode.STANDBY){
-                    if(_lastGameMode == SceneMode.COL){
-                        mode = SceneMode.RECT;
-                    }else if(_lastGameMode == SceneMode.RECT){
-                        mode = SceneMode.COL;
-                    }else{
-                        mode = SceneMode.RECT;
-                    }
-                }
-            }
-            _isDown = true;
+
+        if(Vector3.Equals(_oldMousePos,Input.mousePosition)){
+            Game.isMove = false;
+            OnUp();
         }else{
-            if(_isDown){
-                _isDown = false;
-            }
-            _totalNoTouchFrame++;
-            if(_totalNoTouchFrame >= _delayTime * 60){
-                _totalNoTouchFrame = 0;
-                mode = SceneMode.STANDBY;
-            }
+            _oldMousePos = Input.mousePosition;
+            Game.isMove = true;
+            OnDown();
         }
+
+        // if (Input.GetMouseButton (0)) {
+
+        // }else{
+
+        // }
         if(_oldMode != mode){
             _oldMode = mode;
             if(mode != SceneMode.STANDBY){
@@ -109,5 +106,32 @@ public class Game : MonoBehaviour
                     break;
             }
         }   
+    }
+
+    void OnDown(){
+        _totalNoTouchFrame = 0;
+        if(!_isDown){
+            if(mode == SceneMode.STANDBY){
+                if(_lastGameMode == SceneMode.COL){
+                    mode = SceneMode.RECT;
+                }else if(_lastGameMode == SceneMode.RECT){
+                    mode = SceneMode.COL;
+                }else{
+                    mode = SceneMode.RECT;
+                }
+            }
+        }
+        _isDown = true;
+    }
+
+    void OnUp(){
+        if(_isDown){
+            _isDown = false;
+        }
+        _totalNoTouchFrame++;
+        if(_totalNoTouchFrame >= _delayTime * 60){
+            _totalNoTouchFrame = 0;
+            mode = SceneMode.STANDBY;
+        }
     }
 }
